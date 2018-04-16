@@ -12,22 +12,15 @@ A Mumps database (like VistA) is a series of routines and globals (a global in M
 
 Since the establishment of OSEHRA, each update monthly update of FOIA is exported as routines and globals in zwrite format at `Github <https://github.com/OSEHRA/VistA-M>`_. In addition, DSS vxVistA can be obtained from `this repository <https://github.com/OSEHRA/vxVistA-M>`_ and WorldVistA can be obtained from `this repository <https://github.com/glilly/wvehr2-dewdrop>`_.
 
-In our example, for setting up a VistA Database, we will use FOIA VistA.
+In our example, we will use FOIA VistA for setting up a VistA Database.
 
 Before downloading VistA, we will start by creating an empty database.
 
 Creating an Empty GT.M/YottaDB Database suitable for VistA
 ----------------------------------------------------------
-Traditionally, production instances of VistA are hosted under their own
-username and group. You can create a new username and group and use that for
-running your VistA; or if you are just testing, use your own non-root username.
-DO NOT RUN AS ROOT. Places in which you need to run as root are indicated by
-the presence of ``sudo``.
+Traditionally, production instances of VistA are hosted under their own username and group. You can create a new username and group and use that for running your VistA; or if you are just testing, use your own non-root username. DO NOT RUN AS ROOT. Places in which you need to run as root are indicated by the presence of ``sudo``.
 
-Create a directory where you will place your environment. These two steps need
-to be done as a superuser. The directory name or location doesn't matter. In this case,
-it's ``foia201608`` under ``/var/db``. Second step changes the ownership to your
-user name and your user group.
+These two steps need to be done as a superuser. First, create a directory for your environment. The directory name and location don't matter. In this case, it's ``foia201608`` under ``/var/db``. The second step changes the ownership to your user name and your user group.
 
 .. raw:: html
     
@@ -35,10 +28,7 @@ user name and your user group.
     $ <strong>sudo chown $USER:$USER /var/db/foia201608</strong>.
     $ <strong>cd /var/db/foia201608</strong></code></div>
 
-Then create folders to hold your routines, globals, journals, and objects. The
-convention in the VistA community is to call these folders r g j and o. While it's
-easier to say routines globals journals and objects, I do not want to break with
-convention.
+Now, folders to hold your routines, globals, journals, and objects are created. The convention in the VistA community is to call these folders r g j and o. While it's easier to say routines, globals, journals and objects, I do not want to break with convention.
 
 .. raw:: html
     
@@ -46,23 +36,11 @@ convention.
 
 Two parenthetical remarks:
 
-    FIS (the company behind GT.M) recommends versioning objects
-    and global directories to allow for rolling upgrades. I personally don't 
-    think this is necessary for VistA. More details can be found at the
-    `GT.M Acculturation Workshop <https://sourceforge.net/projects/fis-gtm/files/GT.M%20Acculturation%20Workshop/>`_.
+    FIS (the company behind GT.M) recommends versioning objects and global directories to allow for rolling upgrades. I personally don't think this is necessary for VistA. More details can be found at the `GT.M Acculturation Workshop <https://sourceforge.net/projects/fis-gtm/files/GT.M%20Acculturation%20Workshop/>`_.
     
-    Various people in the VistA community create another directory
-    called "p" for patches, so that you can apply updated  routines
-    in the "r" directory and not overwrite the original routine. The intent is
-    reasonable, but what what almost always happens is that I get calls or emails
-    on why changes aren't showing up. VistA tools (KIDS, Fileman, VPE) are all
-    written just expecting a single routine list.
+    Various people in the VistA community create another directory called "p" for patches, so that you can apply updated routines in the "r" directory and not overwrite the original routine. The intent is reasonable, but what what almost always happens is that changes don't show up because VistA tools (KIDS, Fileman, VPE) are all written just expecting a single routine list.
 
-At this point, we need to create an environment file that we will need to
-source in order to tell GT.M/YottaDB where are our routines and globals are. The reason
-we need to do this is simple: GT.M/YottaDB bases its operations almost entirely on
-environment variables from the shell. All values between || need to be replaced. 
-Here's the file, which I called `env.vista<./env.vista>`_.
+At this point, we need to create an environment file that we will need to source in order to tell GT.M/YottaDB where are our routines and globals are. The reason we need to do this is simple: GT.M/YottaDB bases its operations almost entirely on environment variables from the shell. All values between || need to be replaced. Here's the file, which I called `env.vista<./env.vista>`_.
 
 .. raw:: html
     
@@ -126,8 +104,7 @@ Here's the file, which I called `env.vista<./env.vista>`_.
     # For QEWD if installed (See http://qewdjs.com/)
     export GTMCI=""</code></div>
     
-Once this is done, source the file using ``$ . env.vista``. Then test that
-what you did works by running ``$ mumps -dir``. You should see this:
+Once this is done, source the file using ``$ . env.vista``. Then run ``$ mumps -dir`` to test your environment. The response should be:
 
 .. raw:: html
     
@@ -135,9 +112,7 @@ what you did works by running ``$ mumps -dir``. You should see this:
 
 Type Control-D or "HALT" to get out.
 
-Now we need to create the database. You can create a default database by just
-running ``mupip create``, but rather than do that, we need to write some code
-to tell GT.M/YottaDB to change its default database for VistA. I will create a file 
+Next, you could create a default database by running ``mupip create``. However, writing some code to tell GT.M/YottaDB to change its default database for VistA. I will create a file 
 called `g/db.gde<./db.gde>`_.
 
 .. raw:: html
@@ -330,8 +305,7 @@ g/db.gde.out as well.
     /var/db/foia0616/g/mumps.gld
     </code></div>
 
-If you fail, you will see something similar to the following at the end of the
-output:
+If you fail, you will see something similar to the following at the end of the output:
 
 .. raw:: html
     
